@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:translator/controllers/languageController.dart';
 
 class InputBox extends StatelessWidget {
@@ -11,6 +12,7 @@ class InputBox extends StatelessWidget {
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
+    FocusNode focusNode = FocusNode();
 
     LanguageController langCtrl = Get.find<LanguageController>();
 
@@ -32,7 +34,9 @@ class InputBox extends StatelessWidget {
                   height: height,
                   child: TextFormField(
                     // autofocus: true,
+                    controller: langCtrl.inputCtrl.value,
                     maxLines: 7,
+                    focusNode: focusNode,
                     decoration: const InputDecoration(
                       hintText: 'Write here...',
                       contentPadding: EdgeInsets.all(14),
@@ -46,7 +50,7 @@ class InputBox extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
-                  print("clear input");
+                  langCtrl.inputCtrl.value.clear();
                 },
                 child: const Padding(
                   padding: EdgeInsets.all(10),
@@ -63,7 +67,7 @@ class InputBox extends StatelessWidget {
           height: (height * 0.3) * 0.2,
           child: InkWell(
             onTap: () {
-              print('Doing Translate');
+              focusNode.unfocus();
               langCtrl.translateText();
             },
             child: Container(
@@ -74,14 +78,21 @@ class InputBox extends StatelessWidget {
                   bottomRight: Radius.circular(20),
                 ),
               ),
-              child: const Center(
-                child: Text(
-                  'Translate ✌🏽',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+              child: Center(
+                child: Obx(
+                  () => langCtrl.isLoading.value
+                      ? LoadingAnimationWidget.staggeredDotsWave(
+                          color: Colors.white,
+                          size: 20,
+                        )
+                      : const Text(
+                          'Translate ✌🏽',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                 ),
               ),
             ),

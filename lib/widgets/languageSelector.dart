@@ -16,7 +16,7 @@ class LanguageSelector extends StatelessWidget {
     var height = MediaQuery.of(context).size.height;
 
     final LanguageController langCtrl = Get.find<LanguageController>();
-    langCtrl.initLanguages();
+    // langCtrl.initLanguages();
 
     return Container(
       padding: const EdgeInsets.all(16),
