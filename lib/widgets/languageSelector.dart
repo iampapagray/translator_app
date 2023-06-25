@@ -3,6 +3,7 @@ import 'package:drop_down_list/model/selected_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:translator/controllers/languageController.dart';
+import 'package:translator/models/language.dart';
 
 class LanguageSelector extends StatelessWidget {
   const LanguageSelector({
@@ -39,25 +40,24 @@ class LanguageSelector extends StatelessWidget {
                       fontSize: 20.0,
                     ),
                   ),
-                  data: [],
+                  data: langCtrl.languages,
                   selectedItems: (List<dynamic> selectedList) {
-                    List<String> list = [];
-                    for (var item in selectedList) {
-                      if (item is SelectedListItem) {
-                        list.add(item.name);
-                      }
+                    var item = selectedList[0];
+                    if (item is SelectedListItem) {
+                      langCtrl.updateFromLang(Lang(item.name, item.value!));
                     }
-                    print(list[0]);
                   },
                   enableMultipleSelection: false,
                 ),
               ).showModal(context);
             },
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Colors.grey,
-              ),
-              child: const Text('English (US)'),
+            child: LanguageDropdown(language: langCtrl.fromLang),
+          ),
+          const Center(
+            child: Icon(
+              Icons.swap_horiz,
+              size: 32,
+              color: Colors.greenAccent,
             ),
           ),
           InkWell(
@@ -71,27 +71,64 @@ class LanguageSelector extends StatelessWidget {
                       fontSize: 20.0,
                     ),
                   ),
-                  data: [],
+                  data: langCtrl.languages,
                   selectedItems: (List<dynamic> selectedList) {
-                    List<String> list = [];
-                    for (var item in selectedList) {
-                      if (item is SelectedListItem) {
-                        list.add(item.name);
-                      }
+                    var item = selectedList[0];
+                    if (item is SelectedListItem) {
+                      langCtrl.updateToLang(Lang(item.name, item.value!));
                     }
-                    print(list[0]);
                   },
                   enableMultipleSelection: false,
                 ),
               ).showModal(context);
             },
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-              decoration: BoxDecoration(
-                color: Colors.grey,
-                borderRadius: BorderRadius.circular(100),
+            child: LanguageDropdown(language: langCtrl.toLang),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class LanguageDropdown extends StatelessWidget {
+  const LanguageDropdown({super.key, required this.language});
+
+  final Rx<Lang> language;
+
+  @override
+  Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 12),
+      decoration: BoxDecoration(
+        color: const Color(0xFFf4f6fa),
+        borderRadius: BorderRadius.circular(100),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Obx(
+            () => FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Container(
+                constraints: BoxConstraints(
+                  maxWidth: width * 0.27,
+                  minWidth: width * 0.15,
+                ),
+                child: Text(
+                  language.value.name,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
               ),
-              child: const Text('Japanese'),
+            ),
+          ),
+          const Center(
+            child: Icon(
+              Icons.expand_more,
+              size: 16,
             ),
           ),
         ],

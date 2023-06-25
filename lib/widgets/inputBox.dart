@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:translator/controllers/languageController.dart';
 
 class InputBox extends StatelessWidget {
   const InputBox({
@@ -9,6 +11,8 @@ class InputBox extends StatelessWidget {
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     var height = MediaQuery.of(context).size.height;
+
+    LanguageController langCtrl = Get.find<LanguageController>();
 
     return Container(
       decoration: BoxDecoration(
@@ -60,6 +64,7 @@ class InputBox extends StatelessWidget {
           child: InkWell(
             onTap: () {
               print('Doing Translate');
+              langCtrl.translateText();
             },
             child: Container(
               decoration: const BoxDecoration(
