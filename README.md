@@ -2,9 +2,11 @@
 
 The Text Translator App is a mobile application built with Flutter that supports iOS and Android platforms. It leverages the RapidAPI translation APIs to provide translation services for over 100 languages. Additionally, the app allows users to save translations for later use.
 
-![Screenshot 1](screenshots/screenshot1.png)
-![Screenshot 2](screenshots/screenshot2.png)
-![Screenshot 3](screenshots/screenshot3.png)
+<div style="display: flex; gap: 10px;">
+  <img src="screenshots/screenshot1.png" alt="Screenshot 1" width="250"/>
+  <img src="screenshots/screenshot2.png" alt="Screenshot 2" width="250"/>
+  <img src="screenshots/screenshot3.png" alt="Screenshot 3" width="250"/>
+</div>
 
 ## Table of Contents
 - [Installation](#installation)
